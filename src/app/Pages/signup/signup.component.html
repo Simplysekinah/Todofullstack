@@ -1,0 +1,178 @@
+<main class=" relative overflow-hidden max-w-[900px] mx-auto max-w-[900px] max-lg:w-full">
+    <div class="flex justify-center items-center h-screen bg-blue-600 px-4 md:w-1/2 w-full relative overflow-hidden">
+        <div class="w-full max-w-md bg-white rounded-lg shadow-md p-6 text-center absolute inset-0 transition-transform duration-500 ease-in-out mx-auto" [ngClass]="{
+        'translate-x-full':
+          showLogin || showForgotPassword || showOTP || showResetPassword,
+        'translate-x-0':
+          !showLogin && !showForgotPassword && showOTP && showResetPassword
+      }">
+            <img src="todo.png" alt="Check Icon" class="w-10 h-10 mx-auto mb-4" />
+            <h2 class="text-2xl font-bold text-gray-800 mb-1">Welcome to <span class="text-blue-600">DO IT</span></h2>
+            <p class="text-gray-600 mb-6">Create an account and join us now!</p>
+
+            <form [formGroup]="SignupForm" (ngSubmit)="onSubmit()" class="space-y-4">
+                <input type="text" name="username" id="username" placeholder="Username" formControlName="username"
+                    required
+                    class="w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+                <input type="email" name="email" id="email" placeholder="Email" formControlName="email" required
+                    class="w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+                <input type="password" name="password" id="password" placeholder="Password" formControlName="password"
+                    required
+                    class="w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+                <button type="submit" [disabled]="SignupForm.invalid"
+                    class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">
+                    Sign Up
+                </button>
+            </form>
+
+            <p class="mt-4 text-sm text-gray-600" (click)="toggleForm()">
+                Already have an account?
+                <a routerLink="/signin" class="text-blue-600 font-semibold hover:underline">Sign in</a>
+            </p>
+
+            <div class="mt-6 space-y-2">
+                <button (click)="signUpWith('apple')"
+                    class="w-full border py-2 rounded-md hover:bg-gray-100 transition">Sign Up with Apple</button>
+                <button (click)="signUpWith('google')"
+                    class="w-full border py-2 rounded-md hover:bg-gray-100 transition">Sign Up with Google</button>
+            </div>
+        </div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center px-8 py-6 transition-transform duration-500 ease-in-out transform translate-x-full"
+            [ngClass]="{ 'translate-x-0': showLogin, 'translate-x-full': !showLogin }">
+            <form action="" [formGroup]="LoginForm" (ngSubmit)="onLogin()">
+                <h2 class="text-2xl font-bold text-gray-700">Welcome Back!</h2>
+                <div class="relative z-0 w-full mb-5 group">
+                    <input type="text" id="floating_email" name="email" formControlName="email"
+                        class="peer block w-full border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-green-500 focus:ring-0"
+                        placeholder=" " required />
+                    <label for="floating_email"
+                        class="absolute top-3 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-6 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-green-600">Email</label>
+                    <div class="text-red-600">
+                        @if (SignupForm.controls['email'].errors?.['required'] &&
+                        SignupForm.controls['email'].touched) {
+                        <span>This is required</span>
+                        }
+                    </div>
+                </div>
+                <div class="relative z-0 w-full mb-5 group">
+                    <input type="text" id="floating_password" name="password" formControlName="password"
+                        class="peer block w-full border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-green-500 focus:ring-0"
+                        placeholder=" " required />
+                    <label for="floating_password"
+                        class="absolute top-3 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-6 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-green-600">Password</label>
+                    <div class="text-red-600">
+                        @if (SignupForm.controls['password'].errors?.['required'] &&
+                        SignupForm.controls['password'].touched) {
+                        <span>This is required</span>
+                        }
+                    </div>
+                </div>
+                <p class="mt-4 text-sm text-gray-500 cursor-pointer hover:text-gray-700"
+                    (click)="showForgotPasswordForm()">
+                    Forgot Password?
+                </p>
+                <button class="mt-6 w-64 py-2 bg-blue-500 text-white rounded-full uppercase"
+                    [disabled]="LoginForm.invalid">
+                    Sign In
+                </button>
+                <p class="mt-6 text-sm text-gray-500 cursor-pointer hover:text-gray-700" (click)="toggleForm()">
+                    New here? <span class="text-green-500">Create Account</span>
+                </p>
+            </form>
+        </div>
+
+        <!-- Forgot Password -->
+        <div class="absolute inset-0 flex flex-col px-8 py-6 items-center justify-center transition-transform duration-500 ease-in-out"
+            [ngClass]="{
+        'translate-x-0 opacity-100': showForgotPassword,
+        'translate-x-full opacity-0': !showForgotPassword,
+        'translate-x-0': !showLogin
+      }">
+            <form action="" [formGroup]="ForgetPasswordForm" (ngSubmit)="onForgotPassword()">
+                <h2 class="text-2xl font-bold text-gray-700">Reset Password</h2>
+                <div class="relative z-0 w-full mb-5 group">
+                    <input type="text" id="floating_email" name="email" formControlName="email"
+                        class="peer block w-full border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-green-500 focus:ring-0"
+                        placeholder=" " required />
+                    <label for="floating_resetmail"
+                        class="absolute top-3 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-6 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-green-600">Email</label>
+                    <div class="text-red-600">
+                        @if (SignupForm.controls['email'].errors?.['required'] &&
+                        SignupForm.controls['email'].touched) {
+                        <span>This is required</span>
+                        }
+                    </div>
+                </div>
+                <button class="mt-6 w-64 py-2 bg-orange-500 text-white rounded-full uppercase"
+                    [disabled]="ForgetPasswordForm.invalid">
+                    {{ ForgetPasswordForm.invalid }}
+                    Send Code
+                </button>
+                <p class="mt-6 text-sm text-gray-500 cursor-pointer hover:text-gray-700"
+                    (click)="showForgotPasswordForm()">
+                    Back to Login
+                </p>
+            </form>
+        </div>
+
+        <!-- OTP Verification -->
+        <div class="absolute inset-0 flex flex-col items-center justify-center transition-transform duration-500 ease-in-out"
+            [ngClass]="{
+        'translate-x-0 opacity-100': showOTP,
+        'translate-x-full opacity-0': !showOTP
+      }">
+            <form action="" [formGroup]="OTPForm" (ngSubmit)="onOTPVerification()">
+                <h2 class="text-2xl font-bold text-gray-700">Enter Code</h2>
+                <div class="flex gap-3 mt-5">
+                    <input type="text" id="otp1" name="otp1" formControlName="otp1"
+                        class="w-12 h-12 text-center border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600" />
+                    <input type="text" id="otp2" name="otp2" formControlName="otp2"
+                        class="w-12 h-12 text-center border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600" />
+                    <input type="text" id="otp3" name="otp3" formControlName="otp3"
+                        class="w-12 h-12 text-center border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600" />
+                    <input type="text" id="otp4" name="otp4" formControlName="otp4"
+                        class="w-12 h-12 text-center border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600" />
+                </div>
+                <button class="mt-6 w-64 py-2 bg-purple-500 text-white rounded-full uppercase"
+                    [disabled]="OTPForm.invalid">
+                    Verify
+                </button>
+            </form>
+        </div>
+
+        <!-- Reset Password -->
+        <div class="absolute inset-0 flex flex-col px-8 py-6 items-center justify-center transition-transform duration-500 ease-in-out"
+            [ngClass]="{
+        'translate-x-0 opacity-100': showResetPassword,
+        'translate-x-full opacity-0': !showResetPassword
+      }">
+            <form action="" [formGroup]="ResetPasswordForm" (ngSubmit)="onResetPassword()">
+                <h2 class="text-2xl font-bold text-gray-700">Set New Password</h2>
+                <div class="relative z-0 w-full mb-5 group">
+                    <input type="text" id="floating_password" name="password" formControlName="password"
+                        class="peer block w-full border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-green-500 focus:ring-0"
+                        placeholder=" " required />
+                    <label for="floating_password"
+                        class="absolute top-3 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-6 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-green-600">New
+                        Password</label>
+                </div>
+                <div class="relative z-0 w-full mb-5 group">
+                    <input type="text" id="floating_reset" name="reset" formControlName="reset"
+                        class="peer block w-full border-0 border-b-2 border-gray-300 bg-transparent py-2.5 px-0 text-sm text-gray-900 focus:border-green-500 focus:ring-0"
+                        placeholder=" " required />
+                    <label for="floating_reset"
+                        class="absolute top-3 text-sm text-gray-500 duration-300 transform scale-75 -translate-y-6 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-green-600">Confirm
+                        Password</label>
+                </div>
+                <button class="mt-6 w-64 py-2 bg-green-500 text-white rounded-full uppercase"
+                    [disabled]="ResetPasswordForm.invalid">
+                    Save Password
+                </button>
+            </form>
+        </div>
+    </div>
+    <lib-toastify-toast-container></lib-toastify-toast-container>
+</main>
