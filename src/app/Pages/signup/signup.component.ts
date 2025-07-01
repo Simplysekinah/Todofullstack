@@ -80,7 +80,9 @@ export class SignupComponent {
         this.toggleForm(); // Call toggleForm after successful signup
     },
     (error) => {
-      console.error('Signup failed:', error)});
+      console.error('Signup failed:', error)
+      this.toast.error(error.message) ;
+    });
   }
   signUpWith(provider: string) {
     console.log(`Signing up with ${provider}`);
@@ -96,15 +98,15 @@ export class SignupComponent {
     if (this.LoginForm.invalid) {
       return;
     }
-    // this.service.Signin(this.LoginForm.value).subscribe((response)=>{
-    //   console.log(response)
-    //   console.log(response.user._id)
-    //   localStorage.setItem('_id',response.user._id)
-    //   this.success = 'Signin successful';
-    //   this.router.navigate(['/dashboard'])
-    // },
-    // (error) => {
-    //   console.error('Signup failed:', error)});
+    this.service.Signin(this.LoginForm.value).subscribe((response)=>{
+      console.log(response)
+      console.log(response.user._id)
+      localStorage.setItem('_id',response.user._id)
+      this.toast.success('Signin successful');
+      this.router.navigate(['/dashboard'])
+    },
+    (error) => {
+      console.error('Signup failed:', error)});
   }
 
   onForgotPassword() {
