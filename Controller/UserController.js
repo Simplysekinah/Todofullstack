@@ -18,7 +18,7 @@ const signup = async (request, response, next) => {
         }
         response.status(201).send({ user, message: "Account created successfully" })
     } catch (error) {
-        // response.status(500).send({ message: error.message })
+        response.status(500).send({ message: error.message })
         next(error)
     }
 }
@@ -41,7 +41,7 @@ const signin = async (request, response, next) => {
         let email2 = user.email
         const token = generateToken(email2)
         console.log(token);
-        return response.status(200).send({ user, token, message: "Welcome" + user.username })
+        return response.status(200).send({ user, token, message: "Welcome"+ '' + user.username })
 
     } catch (error) {
         // console.log(error);
@@ -57,6 +57,7 @@ const tokenverification = async (request, response, next) => {
         console.log(token);
         response.status(200).send({ email })
     } catch (error) {
+        response.status(500).send({message:'You have to login',error:error.message})
         // console.log(error);
         next(error)
     }
