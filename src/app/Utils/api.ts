@@ -1,0 +1,1 @@
+export const main:string = 'https://simplysekinahtodowebsite.onrender.com/sekinahtodo';

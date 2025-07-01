@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router } from '@angular/router';
 import { AngularToastifyModule, ToastService } from 'angular-toastify';
+import { AuthService } from '../../Service/Auth/auth.service';
 
 
 @Component({
@@ -27,8 +28,10 @@ export class SignupComponent {
   ForgetPasswordForm!: FormGroup;
   OTPForm!: FormGroup;
   ResetPasswordForm!: FormGroup;
+  // service: any;
+  // success: string;
 
-  constructor(private FB: FormBuilder,private router:Router, private toast:ToastService) { }
+  constructor(private FB: FormBuilder,private router:Router, private toast:ToastService,private service:AuthService) { }
 
   ngOnInit() {
 
@@ -69,8 +72,15 @@ export class SignupComponent {
     if (this.SignupForm.invalid) {
       return;
     }
-    console.log('User signed up:', this.SignupForm.value);
-    alert(`Welcome, ${this.fullName}!`);
+    // console.log('User signed up:', this.SignupForm.value);
+    // alert(`Welcome, ${this.fullName}!`);
+    this.service.Signup(this.SignupForm.value).subscribe((response)=>{
+      console.log(response)
+      this.toast.success('Signup successful') ;
+        this.toggleForm(); // Call toggleForm after successful signup
+    },
+    (error) => {
+      console.error('Signup failed:', error)});
   }
   signUpWith(provider: string) {
     console.log(`Signing up with ${provider}`);
