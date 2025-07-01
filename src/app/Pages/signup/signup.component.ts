@@ -117,14 +117,14 @@ export class SignupComponent {
     if (this.ForgetPasswordForm.invalid) {
       return;
     }
-    // this.service.ForgetPassword(this.ForgetPasswordForm.value).subscribe((response)=>{
-    //   console.log(response)
-    //   this.success = 'Email Received';
-    //   localStorage.setItem('email', this.ForgetPasswordForm.value.email);
-    //   this.showOTPForm();
-    // },
-    // (error) => {
-    //   console.error('Email failed:', error)});
+    this.service.ForgetPassword(this.ForgetPasswordForm.value).subscribe((response)=>{
+      console.log(response)
+      this.toast.success('Email Received');
+      localStorage.setItem('email', this.ForgetPasswordForm.value.email);
+      this.showOTPForm();
+    },
+    (error) => {
+      console.error('Email failed:', error)});
   }
 
   onOTPVerification() {
@@ -135,22 +135,22 @@ export class SignupComponent {
     if (this.OTPForm.invalid) {
       return;
     }
-    // const otp = this.OTPForm.value.otp1 + this.OTPForm.value.otp2 + this.OTPForm.value.otp3 + this.OTPForm.value.otp4;
-    // this.OTPForm.value.otp = otp;
-    // console.log(otp)
-    // console.log(this.OTPForm.value.otp)
-    // // this.OTPForm.value.email = this.ForgetPasswordForm.value.email;
-    // let email =localStorage.getItem('email');
-    // let e = {email: email, otp: otp};
-    // console.log(e)
-    // this.service.ResetPassword(e).subscribe((response)=>{
-    //   console.log(response)
-    //   this.success = 'Email Received';
-    //   localStorage.setItem('otp', e.otp);
-    //   this.showResetPasswordForm();
-    // },
-    // (error) => {
-    //   console.error('Email failed:', error)});
+    const otp = this.OTPForm.value.otp1 + this.OTPForm.value.otp2 + this.OTPForm.value.otp3 + this.OTPForm.value.otp4;
+    this.OTPForm.value.otp = otp;
+    console.log(otp)
+    console.log(this.OTPForm.value.otp)
+    // this.OTPForm.value.email = this.ForgetPasswordForm.value.email;
+    let email =localStorage.getItem('email');
+    let e = {email: email, otp: otp};
+    console.log(e)
+    this.service.ResetPassword(e).subscribe((response)=>{
+      console.log(response)
+      this.toast.success('Email Received') ;
+      localStorage.setItem('otp', e.otp);
+      this.showResetPasswordForm();
+    },
+    (error) => {
+      console.error('Email failed:', error)});
   }
 
   onResetPassword() {
@@ -158,23 +158,23 @@ export class SignupComponent {
     console.log(this.OTPForm.value);
     // this.submitted = true;
 
-    // let email =localStorage.getItem('email');
-    // let otp =localStorage.getItem('otp');
-    // if (this.ResetPasswordForm.invalid) {
-    //   return;
-    // }else if(this.ResetPasswordForm.value.password != this.ResetPasswordForm.value.reset){
-    //   this.success = 'Password does not match';
-    //   return;
-    // }
-    // let e = {email: email, otp: otp, password: this.ResetPasswordForm.value.password};
-    // console.log(e)
-    // this.service.VerifyPassword(e).subscribe((response)=>{
-    //   console.log(response)
-    //   this.success = 'Password Reset Successful';
-    //   this.backToLogin();
-    // },
-    // (error) => {
-    //   console.error('Password Reset Failed:', error)});
+    let email =localStorage.getItem('email');
+    let otp =localStorage.getItem('otp');
+    if (this.ResetPasswordForm.invalid) {
+      return;
+    }else if(this.ResetPasswordForm.value.password != this.ResetPasswordForm.value.reset){
+      this.toast.error('Password does not match');
+      return;
+    }
+    let e = {email: email, otp: otp, password: this.ResetPasswordForm.value.password};
+    console.log(e)
+    this.service.VerifyPassword(e).subscribe((response)=>{
+      console.log(response)
+      this.toast.success('Password Reset Successful');
+      this.backToLogin();
+    },
+    (error) => {
+      console.error('Password Reset Failed:', error)});
   }
 
   toggleForm() {
@@ -214,18 +214,18 @@ export class SignupComponent {
 
   onDashboard() {
     let token = localStorage.getItem('token');
-    // if(token){
-    //   this.service.getUserData().subscribe((response)=>{
-    //     console.log(response);
-    //     this.router.navigate(['/dashboard'])
-    //   },
-    //   (error) => {
-    //     console.error('Failed:', error)
-    //     this.success = 'Session Expired';
-    //     this.router.navigate(['/signup'])
-    //   });
-    // }else{
-    //   this.router.navigate(['/signup'])
-    // }
+    if(token){
+      this.service.getUserData().subscribe((response)=>{
+        console.log(response);
+        this.router.navigate(['/dashboard'])
+      },
+      (error) => {
+        console.error('Failed:', error)
+        this.toast.error( 'Session Expired');
+        this.router.navigate(['/signup'])
+      });
+    }else{
+      this.router.navigate(['/signup'])
+    }
   }
 }
