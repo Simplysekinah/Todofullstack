@@ -103,6 +103,7 @@ export class SignupComponent {
       console.log(response.user._id)
       localStorage.setItem('_id',response.user._id)
       this.toast.success('Signin successful');
+      localStorage.setItem('message',response.message)
       this.router.navigate(['/dashboard'])
     },
     (error) => {
