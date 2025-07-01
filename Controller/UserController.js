@@ -12,7 +12,7 @@ const signup = async (request, response, next) => {
     try {
         const { username, email, password } = request.body
         const mailer = await SendMail(email, username)
-        const user = await userModel.create({ fullname, username, email, password })
+        const user = await userModel.create({ username, email, password })
         if (mailer !== "Mail sent") {
             return response.status(500).send({ message: "Welcome mail not sent", status: false })
         }
