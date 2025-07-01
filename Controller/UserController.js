@@ -3,7 +3,7 @@ const bcrypt =require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const userModel = require('../Model/userModel')
 const { generateToken,verifyToken } = require('../Service/SessionService')
-const {forgotPasswordModel} = require('../Model/ForgotpasswordModel')
+const {forgotPasswordModel} = require('../Model/forgotpasswordModel')
 const {forgotPasswordMail,SendMail} = require('../Utils/mailer')
 const {generateCode} = require('../Config/codeGenerator')
 
