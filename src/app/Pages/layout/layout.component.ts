@@ -21,12 +21,12 @@ export class LayoutComponent {
   constructor(private service: AuthService, private router: Router) { }
   ngOnInit() {
     this.service.getUserData().subscribe((response) => {
-      console.log(response,'res');
-      console.log(localStorage.getItem('message'));
+      // console.log(response,'res');
+      // console.log(localStorage.getItem('message'));
       const mes = localStorage.getItem('message')
-      console.log(mes,'mmmmm');
+      // console.log(mes,'mmmmm');
       this.message = mes
-      console.log(this.message);
+      // console.log(this.message);
     },
       (error) => {
         if (error.status === 500) {
